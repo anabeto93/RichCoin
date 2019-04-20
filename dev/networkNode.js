@@ -77,11 +77,41 @@ app.get('/mine', function(req, res) {
     let nonce = bitcoin.proofOfWork(previousBlockHash, currentBlock)
     let blockHash = bitcoin.hashBlock(previousBlockHash, currentBlock, nonce)
 
-    //simply reward this person for mining the block
-    //console.log('Node address ',nodeAddress)
-    bitcoin.createNewTransaction(12.5, "00", nodeAddress)
-
     let newBlock = bitcoin.createNewBlock(nonce, previousBlockHash, blockHash)
+
+    //broadcast new block to all other nodes
+    const blockPromises = [];
+
+    bitcoin.networkNodes.forEach(networkNodeUrl => {
+        let requestOptions = {
+            uri: networkNodeUrl + '/receive-new-block',
+            method: 'POST',
+            body: newBlock,
+            json: true
+        }
+
+        blockPromises.push( rp(requestOptions) )
+    })
+
+    Promise.all(blockPromises)
+    .then(data => {
+        // create a reward transaction and then broadcast it to all
+        //simply reward this person for mining the block
+        //bitcoin.createNewTransaction(12.5, "00", nodeAddress)
+        let rewardOption = {
+            uri: bitcoin.currentNodeUrl + '/transaction/broadcast',
+            method: 'POST',
+            body: {
+                amount: 12.5,
+                sender: "00",
+                recipient: nodeAddress
+            },
+            json: true
+        };
+
+        return rp(rewardOption)
+    })
+
     res.json({
         note: 'New block mined',
         data: newBlock
