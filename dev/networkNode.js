@@ -265,7 +265,10 @@ app.get('/transaction/:transactionId', function(req, res) {
 })
 
 app.get('/address/:address', function(req, res) {
+    const address = req.params.address
+    let data = bitcoin.getAddressTransactions(address)
 
+    res.json(data)
 })
 
  
