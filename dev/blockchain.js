@@ -130,6 +130,26 @@ class Blockchain {
             block: correctBlock
         };
     }
+
+    getAddressTransactions(address) {
+        let addressTransactions = [];
+
+        this.chain.forEach(block => {
+            block.transactions.forEach(transaction => {
+                let isRecipient = transaction.recipient === address;
+                let isSender = transaction.sender === address;
+
+                if(isRecipient || isSender) {
+                    addressTransactions.push(transaction);
+                }
+            })
+        })
+
+        return {
+            address: address,
+            transactions: addressTransactions
+        }
+    }
 }
 
 module.exports = Blockchain;
