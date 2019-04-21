@@ -111,12 +111,36 @@ app.get('/mine', function(req, res) {
 
         return rp(rewardOption)
     })
-
-    res.json({
-        note: 'New block mined',
-        data: newBlock
-    })
+    .then(data => {
+        res.json({
+            note: 'New block mined & broadcast successfully',
+            data: newBlock
+        })
+    }) 
 }) 
+
+app.post('/receive-new-block', function(req, res) {
+    console.log('Receiving new block ', req.body)
+    const newBlock = req.body.newBlock
+    let lastBlock = bitcoin.getLastBlock()
+    let correctHash = lastBlock.hash === newBlock.previousBlockHash
+    let correctIndex = lastBlock['index'] +1 === newBlock['index']
+
+    if(correctHash && correctIndex) {
+        bitcoin.chain.push(newBlock)
+        //clear out the pending transactions
+        bitcoin.pendingTransactions = []
+        res.json({
+            note: 'New block received and accepted.',
+            newBlock: newBlock
+        })
+    } else {
+        res.json({
+            note: 'New block rejected.',
+            newBlock: newBlock
+        })
+    }
+})
 
 // register a node and broadcast it to the network
 app.post('/register-and-broadcast-node', function(req, res) {
