@@ -133,6 +133,7 @@ class Blockchain {
 
     getAddressTransactions(address) {
         let addressTransactions = [];
+        let balance = 0;
 
         this.chain.forEach(block => {
             block.transactions.forEach(transaction => {
@@ -142,11 +143,18 @@ class Blockchain {
                 if(isRecipient || isSender) {
                     addressTransactions.push(transaction);
                 }
+
+                if(isRecipient) {
+                    balance += transaction.amount;
+                }else if(isSender) {
+                    balance -= transaction.amount;
+                }
             })
         })
 
         return {
             address: address,
+            balance: balance,
             transactions: addressTransactions
         }
     }
