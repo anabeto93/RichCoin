@@ -271,6 +271,11 @@ app.get('/address/:address', function(req, res) {
     res.json(data)
 })
 
+// block explorer
+app.get('/block-explorer', function(req, res) {
+	res.sendFile('./block-explorer/index.html', { root: __dirname });
+})
+
  
 app.listen(port, '192.168.55.10', function() {
     console.log(`Listening on ${port}...`)
