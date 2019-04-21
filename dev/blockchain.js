@@ -41,7 +41,7 @@ class Blockchain {
             recipient: recipient,
             transactionId: uuid().split('-').join('')
         };
-        
+
         return newTransaction;
     }
 
@@ -94,6 +94,18 @@ class Blockchain {
         if(!(correctNonce && correctPreviousBlockHash && correctHash && correctTransactions)) validChain = false;
 
         return validChain;
+    }
+
+    getBlock(blockHash) {
+        let correctBlock = null;
+
+        this.chain.forEach(block => {
+            if (block.hash === blockHash) {
+                correctBlock = block;
+            } 
+        })
+
+        return correctBlock;
     }
 }
 
