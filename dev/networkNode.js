@@ -246,6 +246,20 @@ app.get('/consensus', function(req, res) {
         }
     })
 })
+
+
+app.get('/block/:blockHash', function(req, res) {
+
+})
+
+app.get('/transaction/:transactionId', function(req, res) {
+
+})
+
+app.get('/address/:address', function(req, res) {
+
+})
+
  
 app.listen(port, '192.168.55.10', function() {
     console.log(`Listening on ${port}...`)
