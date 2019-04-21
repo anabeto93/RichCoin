@@ -41,10 +41,7 @@ class Blockchain {
             recipient: recipient,
             transactionId: uuid().split('-').join('')
         };
-
-        /*this.pendingTransactions.push(newTransaction);
-
-        return this.getLastBlock()['index'] + 1;*/
+        
         return newTransaction;
     }
 
