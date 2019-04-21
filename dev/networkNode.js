@@ -121,7 +121,7 @@ app.get('/mine', function(req, res) {
 
 app.post('/receive-new-block', function(req, res) {
     console.log('Receiving new block ', req.body)
-    const newBlock = req.body.newBlock
+    const newBlock = req.body
     let lastBlock = bitcoin.getLastBlock()
     let correctHash = lastBlock.hash === newBlock.previousBlockHash
     let correctIndex = lastBlock['index'] +1 === newBlock['index']
