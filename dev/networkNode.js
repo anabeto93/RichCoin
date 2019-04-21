@@ -249,8 +249,8 @@ app.get('/consensus', function(req, res) {
 
 
 app.get('/block/:blockHash', function(req, res) {
-    const blockHash = req.params.blockHash;
-    let block = bitcoin.getBlock(blockHash);
+    const blockHash = req.params.blockHash
+    let block = bitcoin.getBlock(blockHash)
 
     res.json({
         block: block
@@ -258,7 +258,10 @@ app.get('/block/:blockHash', function(req, res) {
 })
 
 app.get('/transaction/:transactionId', function(req, res) {
+    const transactionId = req.params.transactionId
+    let data = bitcoin.getTransaction(transactionId)
 
+    res.json(data)
 })
 
 app.get('/address/:address', function(req, res) {
