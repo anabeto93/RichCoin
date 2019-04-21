@@ -6,7 +6,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
 </head>
 
 <body ng-app="BlockExplorer">
@@ -57,7 +58,7 @@
 						</tr>
 						<tr>	
 							<td class="bold">Time Stamp</td>
-							<td>{{ Date(block.timestamp).toLocaleDateString }}</td>
+							<td>{{ timeConverter(block.timestamp) }} - {{ block.timestamp }}</td>
 						</tr>
 						<tr>	
 							<td class="bold">Nonce</td>
@@ -118,8 +119,9 @@
 
 			</div>
 		</div>
-	</div>
-
+    </div>
+    
+    
 	<script>
 		window.app = angular.module('BlockExplorer', []);
 
@@ -170,9 +172,23 @@
 				else if ($scope.searchType === 'address') {
 					$scope.fetchAddressData(searchValue);
 				}
-			};
+            };
+            
+            $scope.timeConverter = function(UNIX_timestamp) {
+                console.log('Time converter called...')
+                let a = new Date(UNIX_timestamp);
+                let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                let year = a.getFullYear();
+                let month = months[a.getMonth()];
+                let date = a.getDate();
+                let hour = a.getHours();
+                let min = a.getMinutes();
+                let sec = a.getSeconds();
+                let time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+                return time;
+            }
 
-		});
+        });
 	</script>
 
 	<style type="text/css">
